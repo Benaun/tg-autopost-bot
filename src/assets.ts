@@ -1,6 +1,7 @@
-import { MyContext } from "./interfaces"
 import { parse } from "date-fns"
 import { schedule } from 'node-cron'
+
+import { MyContext } from "./interfaces"
 
 const parseDate = (dateStr: string): Date | null => {
   const parseDate = parse(dateStr, "dd-MM-yyyy HH:mm", new Date())

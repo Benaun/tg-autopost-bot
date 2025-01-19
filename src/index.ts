@@ -1,10 +1,11 @@
 import { Bot, session, GrammyError, HttpError } from 'grammy'
+import { DateTime } from 'luxon'
 import * as dotenv from 'dotenv'
+
 import { MyContext } from './interfaces'
 import { mainKeyBoard } from './keboars'
 import { publishPost, schedulePost } from './assets'
-import { isValid, parse } from 'date-fns'
-import { DateTime } from 'luxon'
+
 
 dotenv.config()
 
@@ -109,7 +110,7 @@ bot.on(":text", async (ctx: MyContext) => {
 
     if (!dateStr) {
       await ctx.reply(
-        'Необходимо предоставить дату и время в формате(UTC) "ЧЧ:ММ ДД.MM.ГГГГ", например, "15:30 19.01.2025".'
+        'Введите дату и время...'
       )
       return
     }
@@ -127,8 +128,6 @@ bot.on(":text", async (ctx: MyContext) => {
 
     const utcDate = dateTime.toUTC().toJSDate()
 
-    console.log(utcDate)
-
     ctx.session.post.datetime = utcDate
     ctx.session.step = undefined
 
@@ -139,7 +138,10 @@ bot.on(":text", async (ctx: MyContext) => {
       utcDate
     )
 
-    await ctx.reply('Пост был успешно запланирован!');
+    await ctx.reply('Пост был успешно запланирован!', {
+      reply_markup: mainKeyBoard
+    });
+
   } else {
     await ctx.reply('Пожалуйста, используйте команду /start для начала.');
   }
